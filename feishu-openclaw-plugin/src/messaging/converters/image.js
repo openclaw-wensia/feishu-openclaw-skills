@@ -1,0 +1,16 @@
+/**
+ * Converter for "image" message type.
+ */
+import { safeParse } from "./utils.js";
+export const convertImage = (raw) => {
+    const parsed = safeParse(raw);
+    const imageKey = parsed?.image_key;
+    if (!imageKey) {
+        return { content: "[image]", resources: [] };
+    }
+    return {
+        content: `![image](${imageKey})`,
+        resources: [{ type: "image", fileKey: imageKey }],
+    };
+};
+//# sourceMappingURL=image.js.map

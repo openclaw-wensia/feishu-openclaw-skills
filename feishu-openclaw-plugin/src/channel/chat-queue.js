@@ -1,0 +1,40 @@
+/**
+ * Shared per-chat task queue.
+ *
+ * Ensures tasks targeting the same account+chat are executed serially.
+ * Used by both websocket inbound messages and synthetic message paths.
+ */
+const chatQueues = new Map();
+const activeDispatchers = new Map();
+export function buildQueueKey(accountId, chatId) {
+    return `${accountId}::${chatId}`;
+}
+export function registerActiveDispatcher(key, entry) {
+    activeDispatchers.set(key, entry);
+}
+export function unregisterActiveDispatcher(key) {
+    activeDispatchers.delete(key);
+}
+export function getActiveDispatcher(key) {
+    return activeDispatchers.get(key);
+}
+/** Check whether the queue has an active task for the given key. */
+export function hasActiveTask(key) {
+    return chatQueues.has(key);
+}
+export function enqueueFeishuChatTask(params) {
+    const { accountId, chatId, task } = params;
+    const key = buildQueueKey(accountId, chatId);
+    const prev = chatQueues.get(key) ?? Promise.resolve();
+    const status = chatQueues.has(key) ? "queued" : "immediate";
+    const next = prev.then(task, task); // continue queue even if previous task failed
+    chatQueues.set(key, next);
+    const cleanup = () => {
+        if (chatQueues.get(key) === next) {
+            chatQueues.delete(key);
+        }
+    };
+    next.then(cleanup, cleanup);
+    return { status, promise: next };
+}
+//# sourceMappingURL=chat-queue.js.map

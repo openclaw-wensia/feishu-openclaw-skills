@@ -1,0 +1,21 @@
+/**
+ * Converter for "share_chat" and "share_user" message types.
+ */
+import { safeParse } from "./utils.js";
+export const convertShareChat = (raw) => {
+    const parsed = safeParse(raw);
+    const chatId = parsed?.chat_id ?? "";
+    return {
+        content: `<group_card id="${chatId}"/>`,
+        resources: [],
+    };
+};
+export const convertShareUser = (raw) => {
+    const parsed = safeParse(raw);
+    const userId = parsed?.user_id ?? "";
+    return {
+        content: `<contact_card id="${userId}"/>`,
+        resources: [],
+    };
+};
+//# sourceMappingURL=share.js.map

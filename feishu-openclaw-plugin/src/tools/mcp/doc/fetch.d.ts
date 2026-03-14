@@ -1,0 +1,10 @@
+/**
+ * MCP fetch-doc 工具
+ * 查看云文档内容（返回标题与 Markdown，支持分页）
+ */
+import type { OpenClawPluginApi } from "openclaw/plugin-sdk";
+/**
+ * 注册 fetch-doc 工具
+ */
+export declare function registerFetchDocTool(api: OpenClawPluginApi): void;
+//# sourceMappingURL=fetch.d.ts.map

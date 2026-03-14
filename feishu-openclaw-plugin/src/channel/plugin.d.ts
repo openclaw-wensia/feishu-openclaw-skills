@@ -1,0 +1,11 @@
+/**
+ * ChannelPlugin interface implementation for the Feishu/Lark channel.
+ *
+ * This is the top-level entry point that the OpenClaw plugin system uses to
+ * discover capabilities, resolve accounts, obtain outbound adapters, and
+ * start the inbound event gateway.
+ */
+import type { ChannelPlugin } from "openclaw/plugin-sdk";
+import type { LarkAccount } from "../core/types.js";
+export declare const feishuPlugin: ChannelPlugin<LarkAccount>;
+//# sourceMappingURL=plugin.d.ts.map
